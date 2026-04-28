@@ -15,16 +15,23 @@ import session from 'express-session';
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
-app.use(session({
-  secret:"captchaSecretKey",
-  resave:false,
-  saveUninitialized:true,
-})
-);
+
 app.use(cors({
   origin:process.env.FRONTEND_URL,
   credentials:true
 }))
+
+app.use(session({
+  secret:"captchaSecretKey",
+  resave:false,
+  saveUninitialized:true,
+   cookie:{
+    secure:true,        // HTTPS required (Vercel + Railway)
+    sameSite:"none"     // cross-origin ke liye MUST
+  }
+})
+);
+
 app.use('/api/auth',authRoutes);
 app.use('/api',bookRoutes);
 app.use('/api/cart',cartRoutes);
