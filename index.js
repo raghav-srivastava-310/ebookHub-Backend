@@ -29,7 +29,8 @@ app.use('/api/auth',authRoutes);
 app.use('/api',bookRoutes);
 app.use('/api/cart',cartRoutes);
 app.use('/api/admin',adminAuthRoutes);
-app.listen(process.env.PORT,()=>{
+const PORT = process.env.PORT || 5000;
+app.listen(PORT,()=>{
   connectDB();
-  console.log(`Server is running on port ${process.env.PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 })
