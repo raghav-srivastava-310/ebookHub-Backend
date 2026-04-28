@@ -25,9 +25,6 @@ app.use(cors({
   origin:process.env.FRONTEND_URL,
   credentials:true
 }))
-app.use('/',( req, res )=>{
-  res.send("Welcome to the eBookHub API! Explore our endpoints to manage books, users, and more.")
-});
 app.use('/api/auth',authRoutes);
 app.use('/api',bookRoutes);
 app.use('/api/cart',cartRoutes);
