@@ -92,17 +92,6 @@ export const googleAuth = async (req, res) => {
     return res.status(500).json({ message: "Internal Server Error", success: false })
   }
 }
-// export const getCaptcha = (req, res) => {
-//   const captcha = svgCaptcha.create({
-//     size: 6,
-//     noise: 3,
-//     color: false,
-//     background: "#827272",
-//   });
-//   req.session.captcha = captcha.text;
-//   res.type("svg");
-//   res.status(200).send(captcha.data);
-// };
 export const getUser = async (req, res) => {
   try {
     const { email, name } = req.user
