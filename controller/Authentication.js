@@ -70,7 +70,7 @@ export const googleAuth = async (req, res) => {
       sameSite: isProduction ? "none" : "lax",
       maxAge: 24 * 60 * 60 * 1000
     });
-      return res.status(200).json({ message: "Signin Successfully", success: true })
+      return res.status(200).json({ message: "Signin Successfully", success: true, accessToken })
     }
     const newUser = await UserModel.create({
       name,
@@ -86,7 +86,7 @@ export const googleAuth = async (req, res) => {
       sameSite: isProduction ? "none" : "lax",
       maxAge: 24 * 60 * 60 * 1000
     });
-    return res.status(201).json({ message: "Signup Successfully", success: true })
+    return res.status(201).json({ message: "Signup Successfully", success: true, accessToken })
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ message: "Internal Server Error", success: false })
@@ -103,5 +103,6 @@ export const getUser = async (req, res) => {
     })
   } catch (error) {
     console.log("Error while fetch user:", error.message);
+    return res.status(500).json({ message: "Internal Server Error", success: false })
   }
 }
