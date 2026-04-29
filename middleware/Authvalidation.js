@@ -9,7 +9,7 @@ export const signUpValidation = (req,res,next)=>{
     confirmPassword:Joi.string().valid(Joi.ref('password')).required().messages({
       'any.only': 'Confirm password must match password'
     }),
-    userCaptcha:Joi.string().required()
+   
   })
   const {error} =schema.validate(req.body);
   if(error){

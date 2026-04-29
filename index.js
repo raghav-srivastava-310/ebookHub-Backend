@@ -21,18 +21,18 @@ app.use(cors({
   origin:process.env.FRONTEND_URL,
   credentials:true
 }))
-app.set('trust proxy', 1);
 
-app.use(session({
-  secret:"captchaSecretKey",
-  resave:false,
-  saveUninitialized:true,
-   cookie:{
-    secure:true,        // HTTPS required (Vercel + Railway)
-    sameSite:"none"     // cross-origin ke liye MUST
-  }
-})
-);
+
+// app.use(session({
+//   secret:"captchaSecretKey",
+//   resave:false,
+//   saveUninitialized:true,
+//    cookie:{
+//     secure:true,        // HTTPS required (Vercel + Railway)
+//     sameSite:"none"     // cross-origin ke liye MUST
+//   }
+// })
+// );
 
 app.use('/api/auth',authRoutes);
 app.use('/api',bookRoutes);

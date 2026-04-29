@@ -5,11 +5,11 @@ import {OAuth2Client} from "google-auth-library"
 import svgCaptcha from "svg-captcha"
 export const signup = async (req,res)=>{
 try {
-    const {name,email,password,userCaptcha} = req.body;
-    if(userCaptcha !== req.session.captcha){
-      return res.status(400).json({message:"Invalid Captcha",success:false})
-    }
-    req.session.captcha = null;
+    const {name,email,password} = req.body;
+    // if(userCaptcha !== req.session.captcha){
+    //   return res.status(400).json({message:"Invalid Captcha",success:false})
+    // }
+    // req.session.captcha = null;
   const user = await UserModel.findOne({email});
   if(user){
     return res.status(403).json({message:"User Already Exist",success:false});
