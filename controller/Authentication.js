@@ -62,12 +62,14 @@ export const googleAuth = async (req, res) => {
     const user = await UserModel.findOne({ email });
     if (user) {
       const accessToken = jwt.sign({ email: user.email, name: user.name }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1d" })
-      res.cookie("accessToken", accessToken, {
-        httpOnly: true,
-        secure: false,
-        sameSite: "lax",
-        maxAge: 24 * 60 * 60 * 1000
-      })
+      const isProduction = process.env.NODE_ENV === "production";
+
+    res.cookie("accessToken", accessToken, {
+      httpOnly: true,
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
+      maxAge: 24 * 60 * 60 * 1000
+    });
       return res.status(200).json({ message: "Signin Successfully", success: true })
     }
     const newUser = await UserModel.create({
@@ -90,17 +92,17 @@ export const googleAuth = async (req, res) => {
     return res.status(500).json({ message: "Internal Server Error", success: false })
   }
 }
-export const getCaptcha = (req, res) => {
-  const captcha = svgCaptcha.create({
-    size: 6,
-    noise: 3,
-    color: false,
-    background: "#827272",
-  });
-  req.session.captcha = captcha.text;
-  res.type("svg");
-  res.status(200).send(captcha.data);
-};
+// export const getCaptcha = (req, res) => {
+//   const captcha = svgCaptcha.create({
+//     size: 6,
+//     noise: 3,
+//     color: false,
+//     background: "#827272",
+//   });
+//   req.session.captcha = captcha.text;
+//   res.type("svg");
+//   res.status(200).send(captcha.data);
+// };
 export const getUser = async (req, res) => {
   try {
     const { email, name } = req.user
