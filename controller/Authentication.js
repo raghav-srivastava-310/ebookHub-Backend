@@ -37,11 +37,12 @@ export const signin = async (req, res) => {
     if (!isPass) {
       return res.status(401).json({ message: "The credential Are not matched", success: false });
     }
-    const accessToken = jwt.sign({ id: user._id, email: user.email, name: user.name }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1d" })
+    const accessToken = jwt.sign({ id: user._id, email: user.email, name: user.name }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1d" });
+    const isProduction = process.env.NODE_ENV === "production";
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax",
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
       maxAge: 24 * 60 * 60 * 1000
     })
     return res.status(200).json({ message: "Signin Successfully", success: true, accessToken })
