@@ -37,7 +37,7 @@ export const signin = async (req, res) => {
     if (!isPass) {
       return res.status(401).json({ message: "The credential Are not matched", success: false });
     }
-    const accessToken = jwt.sign({ email: user.email, name: user.name }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1d" })
+    const accessToken = jwt.sign({ id: user._id, email: user.email, name: user.name }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1d" })
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
       secure: false,
@@ -61,7 +61,7 @@ export const googleAuth = async (req, res) => {
     const { name, email } = ticket.getPayload();
     const user = await UserModel.findOne({ email });
     if (user) {
-      const accessToken = jwt.sign({ email: user.email, name: user.name }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1d" })
+      const accessToken = jwt.sign({ id: user._id, email: user.email, name: user.name }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1d" })
       const isProduction = process.env.NODE_ENV === "production";
 
     res.cookie("accessToken", accessToken, {

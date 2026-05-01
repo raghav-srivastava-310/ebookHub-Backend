@@ -41,6 +41,21 @@ export const getBooks = async(req,res)=>{
       res.status(500).json({message:"Internal Server Error",success:false})
   }
 }
+
+export const getBooksById = async (req,res)=>{
+  try {
+    const { id } = req.params;
+    const book = await BooksModel.findById(id);
+    if (!book) {
+      return res.status(404).json({ message: "Book not found", success: false });
+    }
+    res.status(200).json(book);
+  } catch (error) {
+    console.log("Error:", error.message);
+    res.status(500).json({ message: "Internal Server Error", success: false });
+  }
+};
+
 export const deleteBooks = async(req,res)=>{
 try {
     const {id} = req.params;

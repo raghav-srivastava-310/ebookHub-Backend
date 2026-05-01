@@ -8,8 +8,10 @@ import bookRoutes from './routes/Books.js'
 import cookieParser from 'cookie-parser';
 import cartRoutes from './routes/Cart.js';
 import adminAuthRoutes from './admin/routes/Authenticate.js'
+import paymentRoutes from './routes/payment.js';
 import cors from 'cors';
 import session from 'express-session';
+
 
 
 const app = express();
@@ -38,6 +40,7 @@ app.use('/api/auth',authRoutes);
 app.use('/api',bookRoutes);
 app.use('/api/cart',cartRoutes);
 app.use('/api/admin',adminAuthRoutes);
+app.use('/api/payment',paymentRoutes);
 const PORT = process.env.PORT || 5000;
 app.listen(PORT,()=>{
   connectDB();
