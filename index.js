@@ -36,7 +36,7 @@ app.use(cors({
 // })
 // );
 
-app.use('/',(req,res)=>{
+app.get('/',(req,res)=>{
   res.send("Welcome to eBookHub API");
 })
 
