@@ -35,7 +35,22 @@ try {
 }
 export const getBooks = async(req,res)=>{
   try {
-    const books = await BooksModel.find();
+    const {category,search,sort} = req.query;
+    let filter = {};
+    if(category){
+      filter.category = category;
+    }
+    if(search){
+      filter.title = {$regex:search,$options:"i"};
+    }
+    let sortOption = {};
+    if(sort === "asc"){
+      sortOption.price = 1;
+    }else if(sort === "desc"){
+      sortOption.price = -1;
+    }
+
+    const books = await BooksModel.find(filter).sort(sortOption);
     res.status(200).json(books)
   } catch (error) {
       res.status(500).json({message:"Internal Server Error",success:false})

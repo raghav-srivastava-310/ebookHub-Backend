@@ -37,7 +37,7 @@ export const signin = async (req, res) => {
     if (!isPass) {
       return res.status(401).json({ message: "The credential Are not matched", success: false });
     }
-    const accessToken = jwt.sign({ id: user._id, email: user.email, name: user.name }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1d" });
+    const accessToken = jwt.sign({ id: user._id, email: user.email, name: user.name,role:user.role }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1d" });
     const isProduction = process.env.NODE_ENV === "production";
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
@@ -62,7 +62,7 @@ export const googleAuth = async (req, res) => {
     const { name, email } = ticket.getPayload();
     const user = await UserModel.findOne({ email });
     if (user) {
-      const accessToken = jwt.sign({ id: user._id, email: user.email, name: user.name }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1d" })
+      const accessToken = jwt.sign({ id: user._id, email: user.email, name: user.name, role: user.role }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1d" });
       const isProduction = process.env.NODE_ENV === "production";
 
     res.cookie("accessToken", accessToken, {
@@ -78,7 +78,7 @@ export const googleAuth = async (req, res) => {
       email,
       password: ""
     })
-    const accessToken = jwt.sign({ email: newUser.email, name: newUser.name }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1d" })
+    const accessToken = jwt.sign({ email: newUser.email, name: newUser.name, role: newUser.role }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1d" })
     const isProduction = process.env.NODE_ENV === "production";
 
     res.cookie("accessToken", accessToken, {
@@ -95,15 +95,29 @@ export const googleAuth = async (req, res) => {
 }
 export const getUser = async (req, res) => {
   try {
-    const { email, name } = req.user
+    const { email, name, role } = req.user
     return res.status(203).json({
       message: "User fetched", success: true, userDetail: {
         userEmail: email,
-        userName: name
+        userName: name,
+        userRole: role
       }
     })
   } catch (error) {
     console.log("Error while fetch user:", error.message);
+    return res.status(500).json({ message: "Internal Server Error", success: false })
+  }
+}
+export const logout = async (req, res) => {
+  try {
+    res.clearCookie("accessToken", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    });
+    return res.status(200).json({ message: "Logout Successfully", success: true })
+  } catch (error) {
+    console.log(error.message);
     return res.status(500).json({ message: "Internal Server Error", success: false })
   }
 }
