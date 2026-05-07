@@ -1,5 +1,5 @@
 import { Router } from "express";
-import {  getUser, googleAuth, logout, signin, signup } from "../controller/Authentication.js";
+import {  getAllUser, getUser, googleAuth, logout, signin, signup } from "../controller/Authentication.js";
 import {  signUpValidation } from "../middleware/Authvalidation.js";
 import authUser from "../middleware/Authenticate.js";
 
@@ -9,4 +9,5 @@ router.post('/signin',signin);
 router.post('/google',googleAuth);
 router.post('/logout',logout);
 router.get('/get-me',authUser,getUser)
+router.get('/get-all-user',getAllUser)
 export default router;

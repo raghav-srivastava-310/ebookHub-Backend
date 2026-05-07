@@ -121,3 +121,13 @@ export const logout = async (req, res) => {
     return res.status(500).json({ message: "Internal Server Error", success: false })
   }
 }
+ 
+export const getAllUser = async (req,res)=>{
+  try {
+    const users = await UserModel.find().select("-password");
+    return res.status(200).json({message:"Users fetched successfully",success:true,users})
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({ message: "Internal Server Error", success: false })
+  }
+}

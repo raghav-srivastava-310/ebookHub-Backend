@@ -16,10 +16,11 @@ export const login = async (req,res)=>{
       return res.status(400).json({message:"Invalid credentials",success:false});
     }
     const adminToken = jwt.sign({id:user._id,role:user.role},process.env.ACCESS_TOKEN_SECRET,{expiresIn:"1d"});
+    const isProduction = process.env.NODE_ENV === "production";
     res.cookie("adminToken",adminToken,{
       httpOnly:true,
-      secure:process.env.NODE_ENV === "production",
-      sameSite:"strict",
+      secure:isProduction,
+      sameSite:isProduction ? "none" : "lax",
       maxAge:24*60*60*1000
     });
     res.status(200).json({message:"Welcome To admin panel",success:true,token:adminToken});
