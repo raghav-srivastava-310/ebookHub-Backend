@@ -75,7 +75,7 @@ export const googleAuth = async (req, res) => {
       email,
       password: ""
     })
-    const accessToken = jwt.sign({ email: newUser.email, name: newUser.name, role: newUser.role }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1d" })
+    const accessToken = jwt.sign({ id: newUser._id, email: newUser.email, name: newUser.name, role: newUser.role }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1d" })
     const isProduction = process.env.NODE_ENV === "production";
 
     res.cookie("accessToken", accessToken, {
