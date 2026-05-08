@@ -53,7 +53,7 @@ export const removeItem = async (req,res)=>{
     const cart = await Cart.findOne({userId});
     cart.products = cart.products.filter((p)=>p.productId.toString() !== id);
     await cart.save();
-    res.json({message:"Remove Item",cart});
+    res.json({message:"Remove Item",cart,success:true});
   } catch (error) {
     res.status(500).json({error:error.message});
   }
